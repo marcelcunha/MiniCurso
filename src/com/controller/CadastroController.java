@@ -52,6 +52,7 @@ public class CadastroController implements Initializable, IControleTela {
                             cidade.getText(),
                             estado.getText(),
                             telefone.getText()));
+        limparCampos(null);
     }
     
     @FXML

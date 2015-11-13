@@ -7,12 +7,14 @@ package com;
  */
 
 
+import com.controller.AppController;
 import com.controller.ApresentacaoController;
 import com.controller.CadastroController;
 import com.model.Pessoa;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -21,26 +23,31 @@ import javafx.stage.Stage;
  * @author Marcel
  */
 public class Main extends Application {
-    private final List<Pessoa> listaPessoas = new ArrayList();
+    private List<Pessoa> listaPessoas = new ArrayList();
     
     
     @Override
     public void start(Stage stage) throws Exception {
          ControleTela c = new ControleTela();
         
+         //carrega todas as telas da aplicação
         c.carregarTela("app", "view/app.fxml");
         c.carregarTela("contatos", "view/apresentacao.fxml");
         c.carregarTela("cadastro", "view/cadastro.fxml");
         
-        ApresentacaoController contato = (ApresentacaoController) c.getControle("contatos");
+        //consegue o controle das classes de controle
+        AppController contato = (AppController) c.getControle("app");
         CadastroController cadastro = (CadastroController) c.getControle("cadastro");
+                
+        populaLista();
         
-        
-        //populaLista();
+        //passa a lista de pessoas para as classes de controle
         cadastro.setList(listaPessoas);
-        contato.populaTabela(listaPessoas);
-       
+        contato.setLista(listaPessoas);
+
+        //tela que será mostrada
         c.fixarTela("app");
+        
         Scene scene = new Scene(c);
         
         stage.setScene(scene);

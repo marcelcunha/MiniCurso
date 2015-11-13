@@ -41,10 +41,17 @@ public class AppController  implements Initializable, IControleTela {
     
     @FXML
     public void irContatos(ActionEvent e){
+        //consegue o controle da classe de controle
+        ApresentacaoController a = (ApresentacaoController) controle.getControle("contatos");
+        
+        //passa a lista de pessoas para classe de controle
+        a.setLista(lista);
+        
+        //troca a tela inicial pela tela que mostra os contatos
         controle.fixarTela("contatos");
     }   
 
-    public void setAtributos(List<Pessoa> lista) {
+    public void setLista(List<Pessoa> lista) {
         this.lista = lista;     
     }
     

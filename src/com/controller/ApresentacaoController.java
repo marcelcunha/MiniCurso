@@ -9,24 +9,19 @@ import com.ControleTela;
 import com.ferramentas.IControleTela;
 import com.model.Pessoa;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 
 /**
@@ -36,7 +31,8 @@ import javafx.util.Callback;
  */
 public class ApresentacaoController implements Initializable, IControleTela {
     private ControleTela controle;
-    ObservableList<Pessoa> OList = FXCollections.observableArrayList();
+    private ObservableList<Pessoa> OList = FXCollections.observableArrayList();
+    private List<Pessoa> lista;
     @FXML TableView<Pessoa> tabela;
     @FXML TableColumn<Pessoa,String> colunaNome;
     @FXML TableColumn<Pessoa,String> colunaSobrenome;
@@ -55,6 +51,7 @@ public class ApresentacaoController implements Initializable, IControleTela {
        colunaNome.setText("Nome");
        colunaSobrenome.setText("Sobrenome");
        
+       
        colunaNome.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Pessoa, String>, ObservableValue<String>>() {
 
            @Override
@@ -71,6 +68,8 @@ public class ApresentacaoController implements Initializable, IControleTela {
            }
        });
        
+       //adiciona um listener para chamar o método mostraInformacao() 
+       //toda vez que uma linha da tabela é clicada
        tabela.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Pessoa>() {
 
             @Override
@@ -78,7 +77,6 @@ public class ApresentacaoController implements Initializable, IControleTela {
                 mostraInformacao(newValue);
             }
         });
-      
     } 
     
      @FXML
@@ -92,6 +90,10 @@ public class ApresentacaoController implements Initializable, IControleTela {
         tabela.getItems().remove(selectedIndex);
     }
     
+    /**
+     * Mostra os campos da pessoa cujo nome é clicado na tabela 
+     * @param p 
+     */
     public void mostraInformacao(Pessoa p){
         if(p!=null){
              nome.setText(p.getNome());
@@ -105,11 +107,12 @@ public class ApresentacaoController implements Initializable, IControleTela {
         
     }
 
-    public void populaTabela(List<Pessoa> lista){
-        OList.addAll(lista);
+    public void setLista(List<Pessoa> lista){
+        this.lista = lista;
+        OList.setAll(this.lista);
+        tabela.getItems().clear();
         tabela.getItems().addAll(OList);
-
-      
+        
     }
     
    
