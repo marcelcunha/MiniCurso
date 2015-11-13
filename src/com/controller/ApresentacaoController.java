@@ -10,6 +10,7 @@ import com.ferramentas.IControleTela;
 import com.model.Pessoa;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -19,6 +20,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -85,9 +88,19 @@ public class ApresentacaoController implements Initializable, IControleTela {
     }
     @FXML
     public void delete(ActionEvent e){
-        int selectedIndex = tabela.getSelectionModel().getSelectedIndex();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setContentText("Deseja apagar o contato?");
+        Optional<ButtonType> result = alert.showAndWait();
+        
+        if(result.get() == ButtonType.OK){
+            int selectedIndex = tabela.getSelectionModel().getSelectedIndex();
             
-        tabela.getItems().remove(selectedIndex);
+            tabela.getItems().remove(selectedIndex);
+            lista.remove(selectedIndex);
+            limpaInformacao();
+        }
+        
     }
     
     /**
@@ -106,7 +119,15 @@ public class ApresentacaoController implements Initializable, IControleTela {
        }
         
     }
-
+    public void limpaInformacao(){
+        nome.setText("");
+            sobrenome.setText("");
+            //nascimento.setText();
+            endereco.setText("");
+            cidade.setText("");
+            telefone.setText("");
+            estado.setText(""); 
+    }
     public void setLista(List<Pessoa> lista){
         this.lista = lista;
         OList.setAll(this.lista);

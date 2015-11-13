@@ -8,23 +8,15 @@ package com.controller;
 import com.ControleTela;
 import com.ferramentas.IControleTela;
 import com.model.Pessoa;
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
+
+import javafx.scene.control.Alert;
+
 
 /**
  *
@@ -41,14 +33,22 @@ public class AppController  implements Initializable, IControleTela {
     
     @FXML
     public void irContatos(ActionEvent e){
-        //consegue o controle da classe de controle
-        ApresentacaoController a = (ApresentacaoController) controle.getControle("contatos");
+        if(!lista.isEmpty()){
+            //consegue o controle da classe de controle
+            ApresentacaoController a = (ApresentacaoController) controle.getControle("contatos");
+
+            //passa a lista de pessoas para classe de controle
+            a.setLista(lista);
+
+            //troca a tela inicial pela tela que mostra os contatos
+            controle.fixarTela("contatos");
+        }else{
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);        
+            alert.setTitle("Advertência");
+            alert.setContentText("Não há pessoas cadastradas! \n Cadastre uma primeiro para acessar essa opção!");
+            alert.showAndWait();
+        }
         
-        //passa a lista de pessoas para classe de controle
-        a.setLista(lista);
-        
-        //troca a tela inicial pela tela que mostra os contatos
-        controle.fixarTela("contatos");
     }   
 
     public void setLista(List<Pessoa> lista) {

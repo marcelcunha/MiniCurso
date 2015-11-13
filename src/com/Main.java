@@ -39,7 +39,7 @@ public class Main extends Application {
         AppController contato = (AppController) c.getControle("app");
         CadastroController cadastro = (CadastroController) c.getControle("cadastro");
                 
-        populaLista();
+       // populaLista();
         
         //passa a lista de pessoas para as classes de controle
         cadastro.setList(listaPessoas);
